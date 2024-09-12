@@ -1,0 +1,176 @@
+.taskPage {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main container styling */
+.taskPage .main-container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styling */
+.taskPage header {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.taskPage header h1 {
+    font-size: 28px;
+    color: #4CAF50;
+}
+
+/* Form section styling */
+.taskPage .form-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.taskPage h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Form group styling */
+.taskPage .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.taskPage label {
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+.taskPage input[type="text"], 
+.taskPage input[type="date"], 
+.taskPage select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.taskPage textarea {
+    resize: vertical;
+}
+
+/* Button styling */
+.taskPage button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for buttons */
+.taskPage button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+/* Task table section styling */
+.taskPage .table-section {
+    margin-top: 20px;
+}
+
+.taskPage table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.taskPage thead {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.taskPage th, 
+.taskPage td {
+    text-align: left;
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.taskPage th {
+    font-weight: bold;
+}
+
+.taskPage tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.taskPage tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.taskPage td {
+    color: #333;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .taskPage .main-container {
+        width: 95%;
+    }
+
+    .taskPage input[type="text"], 
+    .taskPage input[type="date"], 
+    .taskPage select {
+        max-width: 100%;
+    }
+
+    .taskPage table, 
+    .taskPage th, 
+    .taskPage td {
+        font-size: 14px;
+    }
+}
+
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+}
+.overlay.active {
+    display: flex; /* Show when active */
+}
+.popup {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+.popup button {
+    margin: 5px;
+}

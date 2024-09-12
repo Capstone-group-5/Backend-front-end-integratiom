@@ -6,178 +6,453 @@
     <title>Sign Up</title>
     <script defer src="https://unpkg.com/alpinejs"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./loginData.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="./alpineData.js"></script>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="taskpage.css">
+    <link rel="stylesheet" href="machine.css">
+    <link rel="stylesheet" href="about.css">
+
+
+
+
     <style>
-        /* General Body Styling */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        /* Container for the Registration Form */
-        .registration-container {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 500px;
-            padding: 20px;
-        }
-
-        /* Header Styling */
-        header h1 {
-            margin-top: 0;
-            color: #333;
-            text-align: center;
-        }
-
-        /* Section Styling */
-        .registration-form-section {
-            margin-top: 20px;
-        }
-
-        /* Form Group Styling */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-        }
-
-        /* Button Styling */
-        button {
-            background-color: #25b354b0;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        button:hover {
-            background-color: #159e3ee0;
-        }
-
-        /* Link Styling */
-        a {
-            color: #159e3ee0;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            .registration-container {
-                width: 95%;
-                padding: 15px;
-            }
-
-            button {
-                padding: 12px;
-                font-size: 18px;
-            }
-        }
-        
-        /* x-cloak CSS rule */
-        [x-cloak] {
-            display: none;
-        }
     </style>
 </head>
-<body x-data="alpine" x-cloak>
-    <div class="registration-container">
+<body x-data="alpine" x-cloak x-init="init()">
 
-        <!-- x-data="{ showSignUpForm: false, id: '', organization: '', username: '', surname: '', email: '', userPassword: '', userRole: '' }" -->
 
+<!-- LOGIN PAGE 
+ --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+ <div class="loginPage" x-show="loginSection">
+        
+    <header>
+        <h1>Sign Up</h1>
+    </header>
+
+    <section class="loginSection">
+        <div x-show="!showSignUpForm">
+            <h2>Login</h2>
+            <div class="loginFormGroup">
+                <label for="email">Email</label>
+                <input type="text" id="email" x-model="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="loginFormGroup">
+                <label for="password">Password:</label>
+                <input type="password" id="password" x-model="userPassword" placeholder="Enter your password" required>
+            </div>
+
+            <button @click="login">Log In</button>
+            <p><a href="#" @click.prevent="alert('Forgot Password feature is under development')">Forgot Password?</a></p>
+            <p><a href="#" @click="showSignUpForm = true">Sign Up</a></p>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div x-show="showSignUpForm">
+            <h2>Additional Information</h2>
+            
+            <div class="loginFormGroup">
+                <label for="organization">Organization:</label>
+                <input type="text" id="organization" x-model="organisation" placeholder="Enter your organization" required>
+            </div>
+
+            <div class="loginFormGroup">
+                <label for="surname">Name:</label>
+                <input type="text" id="surname" x-model="userName" placeholder="Enter your name" required>
+            </div>
+
+            <div class="loginFormGroup">
+                <label for="surname">Surname:</label>
+                <input type="text" id="surname" x-model="userSurname" placeholder="Enter your surname" required>
+            </div>
+
+            <div class="loginFormGroup">
+                <label for="email">Email:</label>
+                <input type="email" id="email" x-model="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="loginFormGroup">
+                <label for="user-password">User Password:</label>
+                <input type="password" id="user-password" x-model="userPassword" placeholder="Enter your user password" required>
+            </div>
+
+            <div class="loginFormGroup">
+                <label for="user-role">User Role:</label>
+                <input type="text" id="user-role" x-model="userRole" placeholder="Enter your user role" required>
+            </div>
+
+            <button @click="submitSignUp">Submit</button>
+            <button @click="showSignUpForm = false">Back</button>
+        </div>
+    </section>
+</div>
+
+
+<!-- HOMEPAGE
+-------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+
+<div class="homePage" x-show="homepage">
+        
+    <div class="homePageMainContainer">
+        <!-- Toggle Button -->
+        <button class="homePageToggleBtn" @click="sidebarOpen = !sidebarOpen">
+            &#9776; <!-- This is the hamburger icon -->
+        </button>
+
+        <!-- Left Sidebar Navigation -->
+        <nav class="homePageSidebar" :class="{ 'homePageHidden': !sidebarOpen }">
+            <ul>
+                <li><a href="#">Crop Analysis</a></li>
+                <li><a href="#" @click=" openMachine()">Machinery Analysis</a></li>
+                <li><a href="#" @click.prevent="alert('Settings feature coming soon!')">Profile</a></li>
+                <li><a href="#" @click="openTask()">Task Appointment</a></li>
+                <li><a href="#" @click.prevent="alert('Crop Inventory feature coming soon!')">Crop Inventory</a></li>
+                <li><a href="#" @click="openAbout()">About Agri-Crop Insight</a></li>
+                <li><a href="#" @click="logout()">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="homePageContent">
+            <header>
+                <h1>AgriCrop Insight</h1>
+            </header>
+            <div class="homePageFeatures">
+                <div class="homePageFeatureItem" @click="">
+                    <img src="../images/download.jpeg" alt="Crop Analysis">
+                    <p>Crop Analysis</p>
+                </div>
+                <div class="homePageFeatureItem" @click="openMachine()">
+                    <img src="../images/Machinery.jpeg" alt="Machinery Analysis">
+                    <p>Machinery Analysis</p>
+                </div>
+                <div class="homePageFeatureItem" @click="">
+                    <img src="../images/Profile.png" alt="Profile">
+                    <p>Profile</p>
+                </div>
+                <div class="homePageFeatureItem" @click="openTask()">
+                    <img src="../images/Task.png" alt="Task Appointment">
+                    <p>Task Appointment</p>
+                </div>
+                <div class="homePageFeatureItem" @click="">
+                    <img src="../images/crop inventory.jpeg" alt="Crop Inventory">
+                    <p>Crop Inventory</p>
+                </div>
+                <div class="homePageFeatureItem" @click="openAbout()">
+                    <img src="../images/about-agricop.jpeg" alt="About Agri-Crop Insight">
+                    <p>About Agri-Crop Insight</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <!-- TASK SCHEDULER
+-------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<div class="taskPage" x-show="taskPage">
+    <div class="main-container" >
         <header>
-            <h1>Sign Up</h1>
+            <h1>Task Appointment</h1>
         </header>
 
-        <section class="registration-form-section">
-            <!-- Login Section -->
-            <div x-show="!showSignUpForm">
-                <h2>Login</h2>
-                <div class="form-group">
-                    <label for="username"> email</label>
-                    <input type="text" id="email" x-model="email" placeholder="Enter your email" required>
-                </div>
+        <!-- Section to add new task -->
+        <section class="form-section">
+            <h2>Add New Task</h2>
 
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" x-model="userPassword" placeholder="Enter your password" required>
-                </div>
 
-                <button @click = "login()" >Log In</button>
-                <p><a href="#" @click.prevent="alert('Forgot Password feature is under development')">Forgot Password?</a></p>
-                <p><a href="#" @click ="showSignUpForm = true">Sign Up</a></p>
+            <!-- Task -->
+            <div class="form-group">
+                <label for="task-name">Task:</label>
+                <input type="text" id="task-name" x-model="task" placeholder="Enter task" required>
             </div>
 
-            <!-- Sign Up Form -->
-            <div x-show="showSignUpForm">
-                <h2>Additional Information</h2>
-               
-                <div class="form-group">
-                    <label for="organization">Organization:</label>
-                    <input type="text" id="organization" x-model="organisation" placeholder="Enter your organization" required>
-                </div>
 
-                <div class="form-group">
-                    <label for="surname">Name:</label>
-                    <input type="text" id="surname" x-model="userName" placeholder="Enter your name" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="surname">Surname:</label>
-                    <input type="text" id="surname" x-model="userSurname" placeholder="Enter your surname" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" x-model="email" placeholder="Enter your email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="user-password">User Password:</label>
-                    <input type="password" id="user-password" x-model="userPassword" placeholder="Enter your user password" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="user-role">User Role:</label>
-                    <input type="text" id="user-role" x-model="userRole" placeholder="Enter your user role" required>
-                </div>
-
-                <button @click="submitSignUp()">Submit</button>
-                <button @click="showSignUpForm = false">Back</button>
+            <!-- Assignee -->
+            <div class="form-group">
+                <label for="assignee-name">Assignee:</label>
+                <input type="text" id="assignee-name" x-model="assignee" placeholder="Enter assignee's name" required>
             </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" x-model="status" required>
+                    <option value="" disabled>Select status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+
+            <!-- Deadline -->
+            <div class="form-group">
+                <label for="deadline">Deadline:</label>
+                <input type="datetime-local" id="deadline" x-model="deadline" required>
+            </div>
+
+            <!-- Description-->
+ <div class="form-group">
+    <label for="deadline">Description</label>
+    <input type="text" id="deadline" x-model="description" required>
+ </div>
+
+            <!-- Add Button -->
+            <button @click="addTask()">
+                Add Task
+            </button>
         </section>
+
+        <!-- Table to display tasks -->
+        <section class="table-section">
+            <h2>Task List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Assigner</th>
+                        <th>Assignee</th>
+                        <th>Status</th>
+                        <th>Deadline</th>
+                        <th>Description</th>
+                        <th>Edit/Delete</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <template x-for="task in taskList" :key="task.Task_Id">
+                        <tr>
+                            <td x-text="task.Task"></td>
+                            <td x-text="task.Assigner"></td>
+                            <td x-text="task.Assignee"></td>
+                            <td x-text="task.Status"></td>
+                            <td x-text="task.Dead_line"></td> 
+                            <td x-text="task.Description"></td>
+                            <td class="tableData" style="display: flex; flex: 1;">
+
+                                <button class="editButton" @click=" openTaskUpdate(task.Task_Id)" style="margin-right: 2px">
+                                    <ion-icon style="font-size: 20px; font-weight: bolder; color: blue; background-color: aliceblue;"
+                                        name="create-outline"></ion-icon>
+                                </button>
+    
+    
+    
+                                <button class="removeButton" style="margin-left: 2px" 
+                                @click="deleteTask(task.Task_Id)">
+                                    <ion-icon style="font-size: 20px; font-weight: bolder;  color: red; background-color: aliceblue;"
+                                     name="trash-outline"></ion-icon>
+                                </button>
+                            </td>
+                        </tr>
+                    </template>
+
+                </tbody>
+            </table>
+        </section>
+        <button @click="goBack()" style="margin-top: 30px;">Back</button>
     </div>
+</div>
+
+
+  <!-- Machine inventory
+-------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+
+<div class="machinePage" x-show="machinePage">
+    <div class="main-container">
+        <header>
+            <h1>Machinery Analysis</h1>
+        </header>
+
+        <!-- Section to add new machinery -->
+        <section class="form-section">
+            <h2>Add New Machinery</h2>
+
+            <!-- Organisation -->
+            <div class="form-group">
+                <label for="organisation-name">Organisation:</label>
+                <input type="text" id="organisation-name" x-model="organisation" placeholder="Enter organisation name" required>
+            </div>
+
+            <!-- Machinery Registration Number -->
+            <div class="form-group">
+                <label for="machinery-reg_number">Machinery Registration Number:</label>
+                <input type="text" id="machinery-reg_number" x-model="reg_number" placeholder="Enter machinery registration number" required>
+            </div>
+
+            <!-- Machinery Type -->
+            <div class="form-group">
+                <label for="machinery-type">Machinery Type:</label>
+                <select id="machinery-type" x-model="condition" required>
+                    <option value="" disabled>Select machinery type</option>
+                    <option value="Tractor">Tractor</option>
+                    <option value="Truck">Truck</option>
+                    <option value="Harvester">Harvester</option>
+                    <option value="Sprayer">Sprayer</option>
+                    <option value="Plow">Plow</option>
+                    <option value="Fertilizer">Fertilizer</option>
+                </select>
+            </div>
+
+            <!-- Issue Description -->
+            <div class="form-group">
+                <label for="machinery-issue">Issue Description:</label>
+                <textarea id="machinery-issue" x-model="issue" placeholder="Describe the issue" required></textarea>
+            </div>
+
+            <!-- Add Button -->
+            <button @click="addMachinery()">Add Machinery</button>
+        </section>
+
+        <!-- Table to display machinery data -->
+        <section class="table-section">
+            <h2>Machinery List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Organisation</th>
+                        <th>Registration Number</th>
+                        <th>Type</th>
+                        <th>Issue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="(machinery, index) in machineryList" :key="index">
+                        <tr>
+                            <td x-text="machinery.organisation"></td>
+                            <td x-text="machinery.reg_number"></td>
+                            <td x-text="machinery.condition"></td>
+                            <td x-text="machinery.issue"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </section>
+        <div class="actions">
+            <button @click="goBack()">Back</button>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="updatepPopUp" x-show="showPopup">
+    <h2 x-show="taskUpdate">Edit task </h2>
+    <h2 x-show="machineUpdate">Edit machine </h2>
+   
+    <div x-show="taskUpdate">
+
+  <!-- Task -->
+  <div class="form-group">
+    <label for="task-name">Task:</label>
+    <input type="text" id="task-name" x-model="task" placeholder="Enter task" required>
+</div>
+
+
+<!-- Assignee -->
+<div class="form-group">
+    <label for="assignee-name">Assignee:</label>
+    <input type="text" id="assignee-name" x-model="assignee" placeholder="Enter assignee's name" required>
+</div>
+
+<!-- Status -->
+<div class="form-group">
+    <label for="status">Status:</label>
+    <select id="status" x-model="status" required>
+        <option value="" disabled>Select status</option>
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+    </select>
+</div>
+
+<!-- Description-->
+ <div class="form-group">
+    <label for="deadline">Description</label>
+    <input type="text" id="deadline" x-model="description" required>
+ </div>
+
+<!-- Deadline -->
+<div class="form-group">
+    <label for="deadline">Deadline:</label>
+    <input type="datetime-local" id="deadline" x-model="deadline" required>
+</div>
+
+
+    <button class="buttons" x-show="taskUpdate" @click="updateTask(task.Task_Id)">Edit</button>
+    <button class="buttons" x-show="machineUpdate" @click="">Edit</button>
+    <button class="buttons" x-show="cropUpdate" @click="">Edit</button>
+    <button class="buttons" @click="showPopup = false; taskUpdate = false; machineUpdate = false; cropUpdate = false">Cancel</button>
+
+
+</div>
+</div>
+
+
+
+<div class="about" x-show="about">
+    <main class="container">
+        <section class="intro">
+            <h2>Background</h2>
+            <p>
+                Crop production is vital for food security, farmer income, and rural livelihoods. However, farmers face significant challenges such as unpredictable weather, soil degradation, pest infestations, and water scarcity, all of which can impact crop productivity. Current tools often provide fragmented or outdated information, lacking the comprehensive guidance necessary for effective decision-making.
+            </p>
+            <p>
+                In response to these challenges, Agri-Crop Insight aims to develop a solution that integrates real-time data with advanced analytics. Our goal is to provide accurate, timely, and actionable crop recommendations, empowering farmers to optimize yields and contribute to enhanced food security and economic resilience in South Africa. This initiative reflects our commitment to advancing agricultural sustainability and improving the livelihoods of farmers in the face of climate change.
+            </p>
+        </section>
+
+        <section class="application">
+            <h2>Application Overview</h2>
+            <p>
+                Our application harnesses real-time data and machine learning to improve crop yield predictions and offer tailored crop recommendations specifically for South African farmers. By analyzing factors such as water availability and historical yield trends, we provide actionable insights that help optimize farming practices and enhance both food security and farmers' livelihoods.
+            </p>
+        </section>
+
+        <section class="functionality">
+            <h2>Key Functions</h2>
+            <ul>
+                <li>Collects and processes real-time data from multiple sources.</li>
+                <li>Employs machine learning algorithms to analyze data patterns and generate accurate forecasts of crop yields.</li>
+                <li>Delivers customized recommendations for crop selection and farming practices based on the analyzed data.</li>
+                <li>Incorporates local storage, encryption, and blockchain technologies to ensure data security and integrity.</li>
+            </ul>
+        </section>
+
+        <section class="target-users">
+            <h2>Who Can Use It</h2>
+            <p>
+                Agri-Crop Insight is designed for farmers who seek to enhance their crop production and make informed decisions based on reliable data and advanced analytics. By providing tools that address critical agricultural challenges, our application aims to support farmers in achieving better outcomes and greater economic stability.
+            </p>
+        </section>
+
+        <section class="instructions">
+            <h2>How to Use Agri-Crop Insight</h2>
+            <ol>
+                <li><strong>Register:</strong> Create an account to access the platform and start using its features.</li>
+                <li><strong>Crop Analysis:</strong> Input details about your farm, including soil type, crops, and water availability, to receive tailored recommendations.</li>
+                <li><strong>Task Appointment:</strong> Schedule and manage tasks related to crop management through the app.</li>
+                <li><strong>Machinery Analysis:</strong> Track and analyze the condition of your machinery to ensure optimal performance and maintenance.</li>
+            </ol>
+        </section>
+    </main>
+    <button @click="goBack()">Back</button>
+</div>
+
+    
+            <!-- Footer -->
+            <footer>
+                <p>&copy; 2024 Agri-Crop Insight. All rights reserved.</p>
+            </footer>
+
+    
     
 
 </body>

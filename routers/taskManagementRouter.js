@@ -119,18 +119,10 @@ router.put('/Update_task/:org/:selectedTask', async (req, res) => {
     try {
         const db = await dbPromise;
 
-        // Check if the new task name already exists for the organization
-        const existingTask = await db.get(
-            'SELECT * FROM task_sheduler WHERE Organisation = ? AND Task = ?',
-            [org, Task]
-        );
 
-        if (existingTask && existingTask.Task !== selectedTask) {
-            return res.status(400).json({ error: 'Task name already exists' });
-        }
 
         const result = await db.run(
-            'UPDATE task_sheduler SET Task = ?, Assigner = ?, Assignee = ?, Status = ?, Description = ?, Dead_line = ? WHERE Organisation = ? AND Task = ?',
+            'UPDATE task_sheduler SET Task = ?, Assigner = ?, Assignee = ?, Status = ?, Description = ?, Dead_line = ? WHERE Organisation = ? AND Task_Id = ?',
             [Task, Assigner, Assignee, Status, Description, Dead_line, org, selectedTask]
         );
 
@@ -151,7 +143,7 @@ router.delete('/Delete_task/:org/:selectedTask', async (req, res) => {
     try{
         const db = await dbPromise;
         const result = await db.run(
-            'DELETE FROM task_sheduler WHERE Organisation = ? AND Task = ?', [ org, selectedTask] 
+            'DELETE FROM task_sheduler WHERE Organisation = ? AND Task_Id = ?', [ org, selectedTask] 
         );
 
         if (result.changes > 0){
