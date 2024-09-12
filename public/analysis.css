@@ -2,7 +2,7 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #62b98e;
+    background-color: #4CAF50; /* Example main color */
     border-radius: 8px;
 }
 
@@ -15,6 +15,7 @@
 .analysisPage label {
     display: block;
     margin-bottom: 8px;
+    color: #333; /* Dark color for better readability */
 }
 
 .analysisPage input {
@@ -22,6 +23,8 @@
     margin-bottom: 12px;
     width: 100%;
     box-sizing: border-box;
+    border: 1px solid #ccc; /* Neutral border color */
+    border-radius: 4px;
 }
 
 .analysisPage .actions {
@@ -32,13 +35,13 @@
 .analysisPage button {
     padding: 10px 20px;
     border: none;
-    background-color: #1a976d;
-    color: rgb(89, 167, 96);
+    background-color: #388E3C; /* Darker shade of main color */
+    color: white;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.3s ease;
 }
 
 .analysisPage button:hover {
-    background-color: #0056b3;
+    background-color: #2C6B2F; /* Even darker shade for hover */
 }
