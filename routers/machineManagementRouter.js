@@ -78,15 +78,15 @@ router.post('/Add_machine/:org/:regNumber', async (req, res) => {
 })
 
 //EDIT A MACHINE
-router.put('/Update_machine/:org/:regNumber', async (req, res) => {
-    const {org, regNumber} = req.params;
+router.put('/Update_machine/:org/:id', async (req, res) => {
+    const {org, id} = req.params;
     const { Machinery, reg_number, Condition, Issue } = req.body;
 
     try{
         const db = await dbPromise;
         const result = await db.run(
-            'UPDATE machinery_inventory SET  Machinery = ?, reg_number = ?, Condition = ?, Issue = ? WHERE Organisation = ? AND reg_number = ?', 
-            [Machinery, reg_number, Condition, Issue, org, regNumber]
+            'UPDATE machinery_inventory SET  Machinery = ?, reg_number = ?, Condition = ?, Issue = ? WHERE Organisation = ? AND machine_Id = ?', 
+            [Machinery, reg_number, Condition, Issue, org, id]
         );
         
         if (result.changes > 0) {
@@ -100,13 +100,13 @@ router.put('/Update_machine/:org/:regNumber', async (req, res) => {
 })
 
 //DELETE A MACHINE
-router.delete('/Delete_machine/:org/:regNumber', async (req, res) => {
-    const { org, regNumber } = req.params;
+router.delete('/Delete_machine/:org/:id', async (req, res) => {
+    const { org, id } = req.params;
 
     try{
         const db = await dbPromise;
         const result = await db.run(
-            'DELETE FROM machinery_inventory WHERE Organisation = ? AND reg_number = ?', [ org, regNumber] 
+            'DELETE FROM machinery_inventory WHERE Organisation = ? AND machine_Id = ?', [ org, id] 
         );
 
         if (result.changes > 0){

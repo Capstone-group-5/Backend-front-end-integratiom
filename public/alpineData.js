@@ -163,6 +163,58 @@ document.addEventListener('alpine:init', () => {
             },
 
 
+            async fetchUpdateProfile() {
+                try {
+                    const response = await axios.put(`http://localhost:5565/profile/Update/user_profile/${this.email}`, {
+                        Organisation: this.cOrg,
+                        UserName: this.userName,
+                        Surname: this.userSurname,
+                        E_mail: this.email,
+                        User_Password: this.userPassword,
+                        User_Role: this.userRole
+                    });
+
+                    if (response.status === 200) {
+                        alert('Profile updated successfully');
+                        this.cEmail = this.email;
+                        this.cPassword = this.userPassword;
+                        this.cUserName = this.userName;
+                        this.cSurname = this.userSurname;
+                        this.cUserRole = this.User_Role;
+                    } else {
+                        alert('Failed to update profile');
+                    }
+                } catch (err) {
+                    console.error('Error', err.message);
+                    alert('An error occurred while updating the profile');
+                }
+            },
+            async updateProfile() {
+                // Extract the values
+                const organisation = this.cOrg || '';
+                const userName = this.userName || '';
+                const userSurname = this.userSurname || '';
+                const email = this.email || '';
+                const userPassword = this.userPassword || '';
+                const userRole = this.userRole || '';
+
+                // Check if any field is empty
+                if (
+                    organisation.trim() === '' ||
+                    userName.trim() === '' ||
+                    userSurname.trim() === '' ||
+                    email.trim() === '' ||
+                    userPassword.trim() === '' ||
+                    userRole.trim() === ''
+                ) {
+                    alert('Please fill out all fields.');
+                    return;
+                }
+
+                // Proceed to update profile
+                await this.fetchUpdateProfile();
+            },
+
 
 
             /* HOMEPAGE
@@ -333,6 +385,8 @@ document.addEventListener('alpine:init', () => {
             condition: '',
             issue: '',
             machineryList: [],
+            selectedMachine: '',
+            machineUpdate: false,
 
             openMachine() {
                 this.machinePage = true;
@@ -397,16 +451,15 @@ document.addEventListener('alpine:init', () => {
             },
 
             // Update existing machinery
-            async updateMachinery(index) {
-                const updatedMachinery = this.machineryList[index];
+            async updateMachinery() {
 
                 try {
-                    const response = await axios.put(`http://localhost:5565/machinery/Update_machine/${this.cOrg}/${updatedMachinery.reg_number}`, {
-                        organisation: updatedMachinery.organisation,
-                        machinery: updatedMachinery.machinery,
-                        reg_number: updatedMachinery.reg_number,
-                        condition: updatedMachinery.condition,
-                        issue: updatedMachinery.issue
+                    const response = await axios.put(`http://localhost:5565/machines/Update_machine/${this.cOrg}/${this.selectedMachine}`, {
+                        Organisation: this.cOrg,
+                        Machinery: this.machinery,
+                        reg_number: this.reg_number,
+                        Condition: this.condition,
+                        Issue: this.issue,
                     });
 
                     if (response.status === 200) {
@@ -420,17 +473,23 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
+            openMachineUpdate(machineId) {
+                this.showPopup = true;
+                this.machineUpdate = true;
+                this.selectedMachine = machineId;
+            },
+
 
             // Delete machinery
-            async deleteMachinery(index) {
-                const machineryToDelete = this.machineryList[index];
+            async deleteMachinery(machineID) {
+
 
                 try {
-                    const response = await axios.delete(`http://localhost:5565/machinery/Delete_machine/${this.cOrg}/${machineryToDelete.reg_number}`);
+                    const response = await axios.delete(`http://localhost:5565/machines/Delete_machine/${this.cOrg}/${machineID}`);
 
                     if (response.status === 200) {
                         alert('Machinery deleted successfully');
-                        this.machineryList.splice(index, 1); // Remove from the list
+                        this.loadMachine;
                     } else {
                         alert('Failed to delete machinery');
                     }
@@ -440,6 +499,7 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
+        
 
             // Clear input fields
             clearFieldsM() {
@@ -454,16 +514,17 @@ document.addEventListener('alpine:init', () => {
             /* CROP INVENTORY
             -------------------------------------------------------------------------------------------------------------------------------------------------------- */
             // Crop inventory data
-            cOrg: '',  // Organization
-            cropType: '',
-            cropYield: '',
+            newCropType: '',
+            newCropYield: '',
             cropList: [],
-            selectedCropId: '',  // Tracks selected crop for updates or deletes
+            selectedCrop:'',
+            cropUpdate: false,
+
 
             // Fetch all crops for an organization
             async fetchCrops() {
                 try {
-                    const response = await axios.get(`http://localhost:5565/Get_crops/${this.cOrg}`);
+                    const response = await axios.get(`http://localhost:5565/crops/Get_crops/${this.cOrg}`);
 
                     if (response.status === 200) {
                         this.cropList = response.data;
@@ -474,6 +535,11 @@ document.addEventListener('alpine:init', () => {
                     console.error('Error fetching crops:', err.message);
                     alert('An error occurred while fetching crops.');
                 }
+            },
+
+            async loadCrops() {
+                await this.fetchCrops();
+                console.log('Crop list', this.cropList)
             },
 
             // Fetch a single type of crop
@@ -495,22 +561,22 @@ document.addEventListener('alpine:init', () => {
 
             // Add a new crop record
             async addCrop() {
-                if (this.cOrg.trim() === '' || this.cropType.trim() === '' || this.cropYield.trim() === '') {
+                if (this.newCropType.trim() === '' || this.newCropYield.trim() === '') {
                     alert('Please fill out all fields.');
                     return;
                 }
 
                 try {
-                    const response = await axios.post('http://localhost:5565/Add_a_crop', {
+                    const response = await axios.post('http://localhost:5565/crops/Add_a_crop', {
                         Organisation: this.cOrg,
-                        Crop: this.cropType,
-                        Yield: this.cropYield
+                        Crop: this.newCropType,
+                        Yield: this.newCropYield,
                     });
 
                     if (response.status === 200) {
                         alert('Crop added successfully');
                         this.clearCropFields();
-                        this.fetchCrops(); // Refresh the crop list
+                        this.loadCrops();
                     } else {
                         alert('Failed to add crop');
                     }
@@ -521,19 +587,16 @@ document.addEventListener('alpine:init', () => {
             },
 
             // Update an existing crop record
-            async updateCrop(index) {
-                const cropToUpdate = this.cropList[index];
-                this.selectedCropId = cropToUpdate.cropRecord_Id;
-
+            async updateCrop() {
                 try {
-                    const response = await axios.put(`http://localhost:5565/Update_crop/${this.selectedCropId}`, {
-                        Crop: cropToUpdate.Crop,
-                        Yield: cropToUpdate.Yield
+                    const response = await axios.put(`http://localhost:5565/crops/Update_crop/${this.selectedCrop}`, {
+                        Crop: this.newCropType,
+                        Yield: this.newCropYield
                     });
 
                     if (response.status === 200) {
                         alert('Crop updated successfully');
-                        this.fetchCrops();
+                        await this.fetchCrops();
                     } else {
                         alert('Failed to update crop');
                     }
@@ -543,17 +606,21 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-            // Delete a crop record
-            async deleteCrop(index) {
-                const cropToDelete = this.cropList[index];
-                this.selectedCropId = cropToDelete.cropRecord_Id;
+            openCropUpdate(cropId) {
+                this.showPopup = true;
+                this.cropUpdate = true;
+                this.selectedCrop =  cropId;
+            },
 
+
+            // Delete a crop record
+            async deleteCrop(cropId) {
                 try {
-                    const response = await axios.delete(`http://localhost:5565/Delete_crop/${this.selectedCropId}`);
+                    const response = await axios.delete(`http://localhost:5565/crops/Delete_crop/${cropId}`);
 
                     if (response.status === 200) {
                         alert('Crop deleted successfully');
-                        this.cropList.splice(index, 1); // Remove from the list
+                        this.loadCrops();
                     } else {
                         alert('Failed to delete crop');
                     }
@@ -569,7 +636,7 @@ document.addEventListener('alpine:init', () => {
                 this.cropYield = '';
             },
 
-            cropUpdate: false,
+            
 
             openCrop() {
                 this.cropPage = true;
@@ -623,6 +690,7 @@ document.addEventListener('alpine:init', () => {
 
                 await this.loadTasks();
                 await this.loadMachine();
+                await this.loadCrops();
                 this.checkUser();
 
             },

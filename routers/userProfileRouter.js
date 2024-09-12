@@ -90,13 +90,13 @@ router.post('/add_new_user/', async (req, res) => {
 //EDIT USER PROFILE
 router.put('/Update/user_profile/:eMail', async (req, res) => {
     const { eMail } = req.params;
-    const { Organisation, UserName, Surname, E_mail, User_Password, User_Role } = req.body;
+    const { UserName, Surname, E_mail, User_Password, User_Role } = req.body;
 
     try {
         const db = await dbPromise;
         const result = await db.run(
-            'UPDATE user_profile SET Organisation = ?, UserName = ?, Surname = ?, E_mail = ?, User_Password = ?, User_Role = ? WHERE E_MAIL = ?',
-            [Organisation, UserName, Surname, E_mail, User_Password, User_Role, eMail]
+            'UPDATE user_profile SET UserName = ?, Surname = ?, E_mail = ?, User_Password = ?, User_Role = ? WHERE E_MAIL = ?',
+            [ UserName, Surname, E_mail, User_Password, User_Role, eMail]
         );
 
         if (result.changes > 0) {
