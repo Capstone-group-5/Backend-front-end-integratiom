@@ -1,0 +1,65 @@
+.profilePage .main-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.profilePage header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profilePage h1 {
+    color: #333;
+    font-size: 24px;
+}
+
+.profilePage .input-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.profilePage .form-group {
+    margin-bottom: 15px;
+}
+
+.profilePage .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+.profilePage .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.profilePage .form-group input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.profilePage button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.profilePage button:hover {
+    background-color: #45a049;
+}

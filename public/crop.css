@@ -1,0 +1,85 @@
+.cropPage .inventory-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cropPage header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.cropPage h1 {
+    color: #4CAF50;
+}
+
+.cropPage .input-section, 
+.cropPage .table-section {
+    margin-bottom: 20px;
+}
+
+.cropPage .form-group {
+    margin-bottom: 15px;
+}
+
+.cropPage .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.cropPage .form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.cropPage button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cropPage button:hover {
+    background-color: #45a049;
+}
+
+.cropPage table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cropPage table th, 
+.cropPage table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.cropPage table th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.cropPage .go-back-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cropPage .go-back-btn:hover {
+    background-color: #45a049;
+}

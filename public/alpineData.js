@@ -12,7 +12,8 @@ document.addEventListener('alpine:init', () => {
             machinePage: false,
             cropPage: false,
             analysisPage: false,
-            showPopup : false,
+            profilePage: false,
+            showPopup: false,
             taskUpdate: false,
             about: false,
 
@@ -137,7 +138,7 @@ document.addEventListener('alpine:init', () => {
                 this.machineryPage = false;
                 this.cropPage = false;
                 this.analysisPage = false;
-            
+
                 // BACKEND CHECKS
                 this.cEmail = '';
                 this.cOrg = '';
@@ -145,7 +146,7 @@ document.addEventListener('alpine:init', () => {
                 this.cUserName = '';
                 this.cSurname = '';
                 this.cUserRole = '';
-            
+
                 // LOGIN AND SIGNUP PAGE
                 this.email = '';
                 this.userPassword = '';
@@ -154,11 +155,11 @@ document.addEventListener('alpine:init', () => {
                 this.userName = '';
                 this.userSurname = '';
                 this.showSignUpForm = false;
-            
+
                 // Clear local storage
                 localStorage.removeItem('profile');
                 localStorage.removeItem('currentPage');
-            
+
             },
 
 
@@ -167,7 +168,7 @@ document.addEventListener('alpine:init', () => {
             /* HOMEPAGE
 -------------------------------------------------------------------------------------------------------------------------------------------------------- */
             sidebarOpen: false,
-            goBack(){
+            goBack() {
                 this.loginSection = false;
                 this.homepage = true;
                 this.taskPage = false;
@@ -177,6 +178,7 @@ document.addEventListener('alpine:init', () => {
                 this.showPopup = false;
                 this.taskUpdate = false;
                 this.about = false;
+                this.profilePage = false;
             },
 
 
@@ -187,12 +189,12 @@ document.addEventListener('alpine:init', () => {
             task: '',
             assigner: this.cUserName,
             assignee: '',
-            description:'',
-            status: '', 
-            taskList:[],
-            taskToDelete:'',
-            deadline:'',
-            selectedTask:'',
+            description: '',
+            status: '',
+            taskList: [],
+            taskToDelete: '',
+            deadline: '',
+            selectedTask: '',
 
             async addTask() {
                 // Ensure all variables are strings and initialized
@@ -200,13 +202,13 @@ document.addEventListener('alpine:init', () => {
                 const assignee = this.assignee || '';
                 const status = this.status || '';
                 const description = this.description || '';
-            
+
                 // Check if any field is empty
                 if (task.trim() === '' || assignee.trim() === '' || status.trim() === '' || description.trim() === '') {
                     alert('Please fill out all fields.');
                     return;
                 }
-            
+
                 try {
                     const response = await axios.post(`http://localhost:5565/tasks/add_new_task/${this.cOrg}`, {
                         Organisation: this.cOrg,
@@ -217,7 +219,7 @@ document.addEventListener('alpine:init', () => {
                         Description: this.description,
                         Dead_line: this.deadline,
                     });
-            
+
                     if (response.status === 200) {
                         alert('Task added successfully');
                         this.clearFields(); // Clear input fields
@@ -228,7 +230,7 @@ document.addEventListener('alpine:init', () => {
                     console.error('Error adding task:', err.message);
                     alert('An error occurred while adding the task.');
                 }
-            },      
+            },
 
             // Fetch tasks
             async fetchTasks() {
@@ -247,7 +249,7 @@ document.addEventListener('alpine:init', () => {
             },
 
 
-            async loadTasks(){
+            async loadTasks() {
                 await this.fetchTasks();
                 console.log('Tasklist', this.taskList)
             },
@@ -261,7 +263,7 @@ document.addEventListener('alpine:init', () => {
             },
 
             async updateTask() {
-       
+
 
                 try {
                     const response = await axios.put(`http://localhost:5565/tasks/Update_task/${this.cOrg}/${this.selectedTask}`, {
@@ -314,40 +316,174 @@ document.addEventListener('alpine:init', () => {
                 this.homepage = false
             },
 
-            checkUser(){
+            checkUser() {
                 console.log('cEmail:', this.cEmail);
-            console.log('cOrg:', this.cOrg);
-            console.log('cPassword:', this.cPassword);
-            console.log('cUserName:', this.cUserName);
-            console.log('cSurname:', this.cSurname);
-            console.log('cUserRole:', this.cUserRole);
+                console.log('cOrg:', this.cOrg);
+                console.log('cPassword:', this.cPassword);
+                console.log('cUserName:', this.cUserName);
+                console.log('cSurname:', this.cSurname);
+                console.log('cUserRole:', this.cUserRole);
             },
 
 
-    /* machine INVENTORY
- -------------------------------------------------------------------------------------------------------------------------------------------------------- */
+            /* machine INVENTORY
+         -------------------------------------------------------------------------------------------------------------------------------------------------------- */
+            machinery: '',
+            reg_number: '',
+            condition: '',
+            issue: '',
+            machineryList: [],
+
             openMachine() {
                 this.machinePage = true;
                 this.homepage = false
             },
 
-                /* CROP INVENTORY
- -------------------------------------------------------------------------------------------------------------------------------------------------------- */
+            // Add new machinery
+            async addMachinery() {
+                if ( this.machinery.trim() === '' || this.reg_number.trim() === '' || this.condition.trim() === '' || this.issue.trim() === '') {
+                    alert('Please fill out all fields.');
+                    return;
+                }
 
-         cropUpdate:false,
+                try {
+                    const response = await axios.post(`http://localhost:5565/machines/Add_machine/${this.cOrg}/${this.reg_number}`, {
+                        Organisation: this.cOrg,
+                        Machinery: this.machinery,
+                        reg_number: this.reg_number,
+                        Condition: this.condition,
+                        Issue: this.issue
+                    });
 
-         openCrop() {
-            this.cropPage = true;
-            this.homepage = false
-        },
+                    if (response.status === 200) {
+                        alert('Machinery added successfully');
+                        this.machineryList.push({
+                            organisation: this.cOrg,
+                            machinery: this.machinery,
+                            reg_number: this.reg_number,
+                            condition: this.condition,
+                            issue: this.issue
+                        });
+                        this.clearFieldsM();
+                        this.loadMachine();
+                    } else {
+                        alert('Failed to add machinery');
+                    }
+                } catch (err) {
+                    console.error('Error adding machinery:', err.message);
+                    alert('An error occurred while adding the machinery.');
+                }
+            },
 
-               /* ABOUT
- -------------------------------------------------------------------------------------------------------------------------------------------------------- */
+            // Fetch all machinery
+            async fetchMachinery() {
+                try {
+                    const response = await axios.get(`http://localhost:5565/machines/retrieve_all_machines/${this.cOrg}`);
 
-         openAbout() {
-            this.about = true;
-            this.homepage = false
-        },
+                    if (response.status === 200) {
+                        this.machineryList = response.data;
+                    } else {
+                        alert('Failed to fetch machinery');
+                    }
+                } catch (err) {
+                    console.error('Error fetching machinery:', err.message);
+                    alert('An error occurred while fetching the machinery.');
+                }
+            },
+
+            async loadMachine(){
+                await this.fetchMachinery();
+                console.log('Machine list', this.machineryList)
+            },
+
+            // Update existing machinery
+            async updateMachinery(index) {
+                const updatedMachinery = this.machineryList[index];
+
+                try {
+                    const response = await axios.put(`http://localhost:5565/machinery/update_machinery/${updatedMachinery.id}`, {
+                        organisation: updatedMachinery.organisation,
+                        machinery: updatedMachinery.machinery,
+                        reg_number: updatedMachinery.reg_number,
+                        condition: updatedMachinery.condition,
+                        issue: updatedMachinery.issue
+                    });
+
+                    if (response.status === 200) {
+                        alert('Machinery updated successfully');
+                    } else {
+                        alert('Failed to update machinery');
+                    }
+                } catch (err) {
+                    console.error('Error updating machinery:', err.message);
+                    alert('An error occurred while updating the machinery.');
+                }
+            },
+
+            // Delete machinery
+            async deleteMachinery(index) {
+                const machineryToDelete = this.machineryList[index];
+
+                try {
+                    const response = await axios.delete(`http://localhost:5565/machinery/delete_machinery/${machineryToDelete.id}`);
+
+                    if (response.status === 200) {
+                        alert('Machinery deleted successfully');
+                        this.machineryList.splice(index, 1);
+                    } else {
+                        alert('Failed to delete machinery');
+                    }
+                } catch (err) {
+                    console.error('Error deleting machinery:', err.message);
+                    alert('An error occurred while deleting the machinery.');
+                }
+            },
+
+            // Clear input fields
+            clearFieldsM() {
+                this.machinery = '';
+                this.reg_number = '';
+                this.condition = '';
+                this.issue = '';
+            },
+
+
+
+            /* CROP INVENTORY
+            -------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+            cropUpdate: false,
+
+            openCrop() {
+                this.cropPage = true;
+                this.homepage = false
+            },
+
+
+            /* Profile
+            -------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+            openProfile() {
+                this.profilePage = true;
+                this.homepage = false
+            },
+
+
+            /* Profile
+            -------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+            openAnalysis() {
+                this.analysisPage = true;
+                this.homepage = false
+            },
+
+            /* ABOUT
+            -------------------------------------------------------------------------------------------------------------------------------------------------------- */
+
+            openAbout() {
+                this.about = true;
+                this.homepage = false
+            },
 
             /* init
  -------------------------------------------------------------------------------------------------------------------------------------------------------- */
@@ -368,10 +504,11 @@ document.addEventListener('alpine:init', () => {
                     this.homepage = true; // Set
                 };
 
-               await this.loadTasks();
-               this.checkUser();
+                await this.loadTasks();
+                await this.loadMachine();
+                this.checkUser();
 
-         },
+            },
 
 
 

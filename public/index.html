@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="taskpage.css">
     <link rel="stylesheet" href="machine.css">
     <link rel="stylesheet" href="about.css">
+    <link rel="stylesheet" href="crop.css">
+    <link rel="stylesheet" href="analysis.css">
+    <link rel="stylesheet" href="profile.css">
 
 
 
@@ -106,11 +109,11 @@
         <!-- Left Sidebar Navigation -->
         <nav class="homePageSidebar" :class="{ 'homePageHidden': !sidebarOpen }">
             <ul>
-                <li><a href="#">Crop Analysis</a></li>
+                <li><a href="#" @click="openAnalysis()">Crop Analysis</a></li>
                 <li><a href="#" @click=" openMachine()">Machinery Analysis</a></li>
-                <li><a href="#" @click.prevent="alert('Settings feature coming soon!')">Profile</a></li>
+                <li><a href="#" @click="openProfile()">Profile</a></li>
                 <li><a href="#" @click="openTask()">Task Appointment</a></li>
-                <li><a href="#" @click.prevent="alert('Crop Inventory feature coming soon!')">Crop Inventory</a></li>
+                <li><a href="#" @click="openCrop()">Crop Inventory</a></li>
                 <li><a href="#" @click="openAbout()">About Agri-Crop Insight</a></li>
                 <li><a href="#" @click="logout()">Logout</a></li>
             </ul>
@@ -122,7 +125,7 @@
                 <h1>AgriCrop Insight</h1>
             </header>
             <div class="homePageFeatures">
-                <div class="homePageFeatureItem" @click="">
+                <div class="homePageFeatureItem" @click="openAnalysis() ">
                     <img src="../images/download.jpeg" alt="Crop Analysis">
                     <p>Crop Analysis</p>
                 </div>
@@ -130,7 +133,7 @@
                     <img src="../images/Machinery.jpeg" alt="Machinery Analysis">
                     <p>Machinery Analysis</p>
                 </div>
-                <div class="homePageFeatureItem" @click="">
+                <div class="homePageFeatureItem" @click="openProfile()">
                     <img src="../images/Profile.png" alt="Profile">
                     <p>Profile</p>
                 </div>
@@ -138,7 +141,7 @@
                     <img src="../images/Task.png" alt="Task Appointment">
                     <p>Task Appointment</p>
                 </div>
-                <div class="homePageFeatureItem" @click="">
+                <div class="homePageFeatureItem" @click="openCrop()">
                     <img src="../images/crop inventory.jpeg" alt="Crop Inventory">
                     <p>Crop Inventory</p>
                 </div>
@@ -151,6 +154,85 @@
     </div>
 </div>
 
+
+
+   <!-- CROP ANALYSIS
+-------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<div class="analysisPage" x-show="analysisPage">
+    <div class="crop-analysis-container">
+        <h1>Crop Analysis</h1>
+
+        <!-- Input fields for Crop Analysis -->
+        <div class="field-section">
+            <label for="field-size">Field size in hectare:</label>
+            <input type="number" id="field-size" x-model="fieldSize">
+        </div>
+
+        <h2>Soil Quality</h2>
+        <div class="soil-quality">
+            <div>
+                <label for="ph-value">pH Value:</label>
+                <input type="number" id="ph-value" x-model="phValue">
+            </div>
+
+            <div>
+                <label for="nitrogen">Nitrogen:</label>
+                <input type="number" id="nitrogen" x-model="nitrogen">
+            </div>
+
+            <div>
+                <label for="potassium">Potassium:</label>
+                <input type="number" id="potassium" x-model="potassium">
+            </div>
+
+            <div>
+                <label for="phosphorus">Phosphorus:</label>
+                <input type="number" id="phosphorus" x-model="phosphorus">
+            </div>
+        </div>
+
+        <h2>Environmental Factors</h2>
+        <div class="environmental-factors">
+            <div>
+                <label for="temperature">Temperature:</label>
+                <input type="number" id="temperature" x-model="temperature">
+            </div>
+
+            <div>
+                <label for="rainfall">Rainfall:</label>
+                <input type="number" id="rainfall" x-model="rainfall">
+            </div>
+
+            <div>
+                <label for="humidity">Humidity:</label>
+                <input type="number" id="humidity" x-model="humidity">
+            </div>
+        </div>
+
+        <h2>Select Crop Type</h2>
+        <div class="crop-selection">
+            <select x-model="cropType">
+                <option value="">Select a crop</option>
+                <option value="maize">Maize</option>
+                <option value="banana">Banana</option>
+                <option value="mango">Mango</option>
+                <option value="grapes">Grapes</option>
+                <option value="watermelon">Watermelon</option>
+                <option value="apple">Apple</option>
+                <option value="orange">Orange</option>
+                <option value="papaya">Papaya</option>
+            </select>
+        </div>
+
+        <div class="actions">
+            <button @click="submitForm">Submit</button>
+            <button @click="goBack">Back</button>
+        </div>
+
+    </div>
+
+
+</div>
 
 
 
@@ -274,11 +356,7 @@
         <section class="form-section">
             <h2>Add New Machinery</h2>
 
-            <!-- Organisation -->
-            <div class="form-group">
-                <label for="organisation-name">Organisation:</label>
-                <input type="text" id="organisation-name" x-model="organisation" placeholder="Enter organisation name" required>
-            </div>
+
 
             <!-- Machinery Registration Number -->
             <div class="form-group">
@@ -289,7 +367,7 @@
             <!-- Machinery Type -->
             <div class="form-group">
                 <label for="machinery-type">Machinery Type:</label>
-                <select id="machinery-type" x-model="condition" required>
+                <select id="machinery-type" x-model="machinery" required>
                     <option value="" disabled>Select machinery type</option>
                     <option value="Tractor">Tractor</option>
                     <option value="Truck">Truck</option>
@@ -297,6 +375,16 @@
                     <option value="Sprayer">Sprayer</option>
                     <option value="Plow">Plow</option>
                     <option value="Fertilizer">Fertilizer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="machinery-type">Machinery condition:</label>
+                <select id="machinery-type" x-model="condition" required>
+                    <option value="" disabled>Select machinery condition</option>
+                    <option value="Working">Working</option>
+                    <option value="Under maintenance">Under maintenance</option>
+                    <option value="Broken">Broken</option>
                 </select>
             </div>
 
@@ -316,19 +404,35 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Organisation</th>
                         <th>Registration Number</th>
                         <th>Type</th>
+                        <th>Condition</th>
                         <th>Issue</th>
+                        <th>Edit/Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                     <template x-for="(machinery, index) in machineryList" :key="index">
                         <tr>
-                            <td x-text="machinery.organisation"></td>
                             <td x-text="machinery.reg_number"></td>
-                            <td x-text="machinery.condition"></td>
-                            <td x-text="machinery.issue"></td>
+                            <td x-text="machinery.Machinery"></td>
+                            <td x-text="machinery.Condition"></td>
+                            <td x-text="machinery.Issue"></td>
+                            <td class="tableData" style="display: flex; flex: 1;">
+
+                                <button class="editButton" @click=" machineUpdate(machinery.machine_Id)" style="margin-right: 2px">
+                                    <ion-icon style="font-size: 20px; font-weight: bolder; color: blue; background-color: aliceblue;"
+                                        name="create-outline"></ion-icon>
+                                </button>
+    
+    
+    
+                                <button class="removeButton" style="margin-left: 2px" 
+                                @click="deleteMachine(machinery.machine_Id)">
+                                    <ion-icon style="font-size: 20px; font-weight: bolder;  color: red; background-color: aliceblue;"
+                                     name="trash-outline"></ion-icon>
+                                </button>
+                            </td>
                         </tr>
                     </template>
                 </tbody>
@@ -342,6 +446,103 @@
 </div>
 
 
+  <!-- Crop inventory
+-------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<div class="cropPage" x-show="cropPage">
+    <div class="inventory-container">
+        <header>
+            <h1>Crop Inventory</h1>
+        </header>
+
+        <!-- Input Section to Add Crops -->
+        <section class="input-section">
+            <div class="form-group">
+                <label for="crop-type">Crop Type:</label>
+                <input type="text" id="crop-type" x-model="newCropType" placeholder="Enter crop type">
+            </div>
+
+            <div class="form-group">
+                <label for="crop-yield">Crop Yield (kg/ha):</label>
+                <input type="number" id="crop-yield" x-model="newCropYield" placeholder="Enter crop yield">
+            </div>
+
+            <button @click="addCrop()">Add Crop</button>
+        </section>
+
+        <!-- Crop Inventory Table -->
+        <section class="table-section">
+            <h2>Crop Inventory List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Crop Type</th>
+                        <th>Yield (kg/ha)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="(crop, index) in crops" :key="index">
+                        <tr>
+                            <td x-text="crop.type"></td>
+                            <td x-text="crop.yield"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Go Back Button -->
+        <button class="go-back-btn" @click="goBack()">Go Back</button>
+    </div>
+
+
+</div>
+
+
+  <!-- Profile
+-------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<div class="profilePage" x-show="profilePage">
+    <div class="main-container">
+        <header>
+            <h1>Profile Information</h1>
+        </header>
+
+        <!-- Profile Input Fields -->
+        <section class="input-section">
+            <div class="form-group">
+                <label for="surname">Surname:</label>
+                <input type="text" id="surname" x-model="surname" placeholder="Enter your surname" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" x-model="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="user-password">User Password:</label>
+                <input type="password" id="user-password" x-model="userPassword" placeholder="Enter your user password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="user-role">User Role:</label>
+                <input type="text" id="user-role" x-model="userRole" placeholder="Enter your user role" required>
+            </div>
+
+            <!-- Organisation Input Field -->
+            <div class="form-group">
+                <label for="organisation">Organisation:</label>
+                <input type="text" id="organisation" x-model="organisation" placeholder="Enter your organisation" required>
+            </div>
+
+            <button @click="saveProfile()">Save Profile</button>
+        </section>
+    </div>
+    <button @click="goBack">Back</button>
+</div>
+
+
+  <!-- Update popup
+-------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
 <div class="updatepPopUp" x-show="showPopup">
     <h2 x-show="taskUpdate">Edit task </h2>
@@ -396,6 +597,9 @@
 </div>
 
 
+  <!-- ABOUT PAGE
+-------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
 
 <div class="about" x-show="about">
     <main class="container">
@@ -445,6 +649,9 @@
     </main>
     <button @click="goBack()">Back</button>
 </div>
+
+
+
 
     
             <!-- Footer -->

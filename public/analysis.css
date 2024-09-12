@@ -1,0 +1,44 @@
+.analysisPage .crop-analysis-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #62b98e;
+    border-radius: 8px;
+}
+
+.analysisPage .field-section, 
+.analysisPage .soil-quality, 
+.analysisPage .environmental-factors {
+    margin-bottom: 20px;
+}
+
+.analysisPage label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.analysisPage input {
+    padding: 8px;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.analysisPage .actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.analysisPage button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #1a976d;
+    color: rgb(89, 167, 96);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.analysisPage button:hover {
+    background-color: #0056b3;
+}
