@@ -71,7 +71,6 @@ document.addEventListener('alpine:init', () => {
                     const login = await this.fetchUserProfile();
 
                     if (this.email === this.cEmail && this.userPassword === this.cPassword) {
-                        alert(`HELLO  ${this.cUserName}`);
                         this.loginSection = false;
                         this.homepage = true;
                         this.currentPage = 'homePage';
