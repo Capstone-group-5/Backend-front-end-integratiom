@@ -235,6 +235,122 @@ document.addEventListener('alpine:init', () => {
 
 
 
+
+
+            /* ANALYSIS PAGE
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+            region: '',
+            crop: '',
+            regionAngola: 0,
+            regionBotswana: 0,
+            regionEswatini: 0,
+            regionLesotho: 0,
+            regionMalawi: 0,
+            regionMozambique: 0,
+            regionSouthAfrica: 0,
+            regionTanzania: 0,
+            regionZambia: 0,
+            regionZimbabwe: 0,
+            cropMaize: 0,
+            cropRice: 0,
+            cropWheat: 0,
+
+            updateRegion() {
+                // Reset all region values to 0
+                this.regionAngola = 0;
+                this.regionBotswana = 0;
+                this.regionEswatini = 0;
+                this.regionLesotho = 0;
+                this.regionMalawi = 0;
+                this.regionMozambique = 0;
+                this.regionSouthAfrica = 0;
+                this.regionTanzania = 0;
+                this.regionZambia = 0;
+                this.regionZimbabwe = 0;
+
+                // Set the selected region's value to 1
+                switch (this.region) {
+                    case 'Angola':
+                        this.regionAngola = 1;
+                        break;
+                    case 'Botswana':
+                        this.regionBotswana = 1;
+                        break;
+                    case 'Eswatini':
+                        this.regionEswatini = 1;
+                        break;
+                    case 'Lesotho':
+                        this.regionLesotho = 1;
+                        break;
+                    case 'Malawi':
+                        this.regionMalawi = 1;
+                        break;
+                    case 'Mozambique':
+                        this.regionMozambique = 1;
+                        break;
+                    case 'South Africa':
+                        this.regionSouthAfrica = 1;
+                        break;
+                    case 'Tanzania':
+                        this.regionTanzania = 1;
+                        break;
+                    case 'Zambia':
+                        this.regionZambia = 1;
+                        break;
+                    case 'Zimbabwe':
+                        this.regionZimbabwe = 1;
+                        break;
+                }
+            },
+
+            updateAnalysisCrop() {
+                // Reset all crop values to 0
+                this.cropMaize = 0;
+                this.cropRice = 0;
+                this.cropWheat = 0;
+
+                // Set the selected crop's value to 1
+                switch (this.crop) {
+                    case 'Maize':
+                        this.cropMaize = 1;
+                        break;
+                    case 'Rice':
+                        this.cropRice = 1;
+                        break;
+                    case 'Wheat':
+                        this.cropWheat = 1;
+                        break;
+                }
+            },
+
+            analysisData() {
+                console.log({
+                    YIELD: this.yield,
+                    HUMIDITY: this.humidity,
+                    RAINFALL: this.rainfall,
+                    TEMPERATURE: this.temperature,
+                    TREND: this.trend,
+                    REGION_Angola: this.regionAngola,
+                    REGION_Botswana: this.regionBotswana,
+                    REGION_Eswatini: this.regionEswatini,
+                    REGION_Lesotho: this.regionLesotho,
+                    REGION_Malawi: this.regionMalawi,
+                    REGION_Mozambique: this.regionMozambique,
+                    REGION_SouthAfrica: this.regionSouthAfrica,
+                    REGION_Tanzania: this.regionTanzania,
+                    REGION_Zambia: this.regionZambia,
+                    REGION_Zimbabwe: this.regionZimbabwe,
+                    CROP_Maize: this.cropMaize,
+                    CROP_Rice: this.cropRice,
+                    CROP_Wheat: this.cropWheat,
+                });
+                this.updateRegion();
+                this.updateAnalysisCrop();
+            },
+
+
+
+
             /* TASK SHCEDULER
 -------------------------------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -499,7 +615,7 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-        
+
 
             // Clear input fields
             clearFieldsM() {
@@ -517,7 +633,7 @@ document.addEventListener('alpine:init', () => {
             newCropType: '',
             newCropYield: '',
             cropList: [],
-            selectedCrop:'',
+            selectedCrop: '',
             cropUpdate: false,
 
 
@@ -609,7 +725,7 @@ document.addEventListener('alpine:init', () => {
             openCropUpdate(cropId) {
                 this.showPopup = true;
                 this.cropUpdate = true;
-                this.selectedCrop =  cropId;
+                this.selectedCrop = cropId;
             },
 
 
@@ -636,7 +752,7 @@ document.addEventListener('alpine:init', () => {
                 this.cropYield = '';
             },
 
-            
+
 
             openCrop() {
                 this.cropPage = true;

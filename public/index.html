@@ -115,10 +115,10 @@
             <!-- Left Sidebar Navigation -->
             <nav class="homePageSidebar" :class="{ 'homePageHidden': !sidebarOpen }">
                 <ul>
-                    <li><a href="#" @click="openAnalysis()">Crop Analysis</a></li>
-                    <li><a href="#" @click=" openMachine()">Machinery Analysis</a></li>
                     <li><a href="#" @click="openProfile()">Profile</a></li>
+                    <li x-show="cUserRole === 'Admin'"><a href="#" @click="openAnalysis()">Crop Analysis</a></li>
                     <li><a href="#" @click="openTask()">Task Appointment</a></li>
+                    <li><a href="#" @click=" openMachine()">Machinery Analysis</a></li>
                     <li><a href="#" @click="openCrop()">Crop Inventory</a></li>
                     <li><a href="#" @click="openAbout()">About Agri-Crop Insight</a></li>
                     <li><a href="#" @click="logout()">Logout</a></li>
@@ -131,26 +131,32 @@
                     <h1>AgriCrop Insight</h1>
                 </header>
                 <div class="homePageFeatures">
-                    <div class="homePageFeatureItem" @click="openAnalysis() ">
+                    <div class="homePageFeatureItem" @click="openAnalysis()" x-show="cUserRole === 'Admin'">
                         <img src="../images/download.jpeg" alt="Crop Analysis">
                         <p>Crop Analysis</p>
                     </div>
-                    <div class="homePageFeatureItem" @click="openMachine()">
-                        <img src="../images/Machinery.jpeg" alt="Machinery Analysis">
-                        <p>Machinery Analysis</p>
-                    </div>
-                    <div class="homePageFeatureItem" @click="openProfile()">
-                        <img src="../images/Profile.png" alt="Profile">
-                        <p>Profile</p>
-                    </div>
+
                     <div class="homePageFeatureItem" @click="openTask()">
                         <img src="../images/Task.png" alt="Task Appointment">
                         <p>Task Appointment</p>
                     </div>
+
+                    <div class="homePageFeatureItem" @click="openMachine()">
+                        <img src="../images/Machinery.jpeg" alt="Machinery Analysis">
+                        <p>Machinery Analysis</p>
+                    </div>
+
                     <div class="homePageFeatureItem" @click="openCrop()">
                         <img src="../images/crop inventory.jpeg" alt="Crop Inventory">
                         <p>Crop Inventory</p>
                     </div>
+
+                    <div class="homePageFeatureItem" @click="openProfile()">
+                        <img src="../images/Profile.png" alt="Profile">
+                        <p>Profile</p>
+                    </div>
+
+
                     <div class="homePageFeatureItem" @click="openAbout()">
                         <img src="../images/about-agricop.jpeg" alt="About Agri-Crop Insight">
                         <p>About Agri-Crop Insight</p>
@@ -174,27 +180,33 @@
                 <input type="number" id="field-size" x-model="fieldSize">
             </div>
 
-            <h2>Soil Quality</h2>
-            <div class="soil-quality">
-                <div>
-                    <label for="ph-value">pH Value:</label>
-                    <input type="number" id="ph-value" x-model="phValue">
-                </div>
 
-                <div>
-                    <label for="nitrogen">Nitrogen:</label>
-                    <input type="number" id="nitrogen" x-model="nitrogen">
-                </div>
+            <h2>Select Region</h2>
+            <div class="crop-selection">
+                <select x-model="region">
+                    <option value="">Select a region</option>
+                    <option value="Angola">Angola</option>
+                    <option value="Botswana">Botswana</option>
+                    <option value="Eswatini">Eswatini</option>
+                    <option value="Lesotho">Lesotho</option>
+                    <option value="Malawi">Eswatini</option>
+                    <option value="Mozambique">Mozambique</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="Tanzania">Tanzania</option>
+                    <option value="Zimbabwe">Zimbabwe</option>
+                    <option value="Zambia">Zambia</option>
+                </select>
+            </div>
 
-                <div>
-                    <label for="potassium">Potassium:</label>
-                    <input type="number" id="potassium" x-model="potassium">
-                </div>
 
-                <div>
-                    <label for="phosphorus">Phosphorus:</label>
-                    <input type="number" id="phosphorus" x-model="phosphorus">
-                </div>
+            <h2>Select Crop Type</h2>
+            <div class="crop-selection">
+                <select x-model="cropType">
+                    <option value="">Select a crop</option>
+                    <option value="Maize">Maize</option>
+                    <option value="Wheat">Wheat</option>
+                    <option value="Rice">Rice</option>
+                </select>
             </div>
 
             <h2>Environmental Factors</h2>
@@ -215,20 +227,7 @@
                 </div>
             </div>
 
-            <h2>Select Crop Type</h2>
-            <div class="crop-selection">
-                <select x-model="cropType">
-                    <option value="">Select a crop</option>
-                    <option value="maize">Maize</option>
-                    <option value="banana">Banana</option>
-                    <option value="mango">Mango</option>
-                    <option value="grapes">Grapes</option>
-                    <option value="watermelon">Watermelon</option>
-                    <option value="apple">Apple</option>
-                    <option value="orange">Orange</option>
-                    <option value="papaya">Papaya</option>
-                </select>
-            </div>
+           
 
             <div class="actions">
                 <button @click="submitForm">Submit</button>
@@ -251,7 +250,7 @@
             </header>
 
             <!-- Section to add new task -->
-            <section class="form-section">
+            <section class="form-section" x-show="cUserRole === 'Admin'">
                 <h2>Add New Task</h2>
 
 
@@ -363,7 +362,7 @@
             </header>
 
             <!-- Section to add new machinery -->
-            <section class="form-section">
+            <section class="form-section" x-show="cUserRole === 'Admin'">
                 <h2>Add New Machinery</h2>
 
 
@@ -469,7 +468,7 @@
             </header>
 
             <!-- Input Section to Add Crops -->
-            <section>
+            <section x-show="cUserRole === 'Admin'">
 
                 <div class="form-group">
                     <label for="crop-type">Crop type:</label>
