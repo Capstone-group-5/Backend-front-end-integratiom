@@ -200,7 +200,7 @@
 
 
         <h2>Select Crop Type</h2>
-        <div class="crop-selection">
+        <div class="compareSelection">
             <select x-model="cropType"  @change="updateAnalysisCrop()">
                 <option value="">Select a crop</option>
                 <option value="Maize">Maize</option>
@@ -249,7 +249,7 @@
          
         </div>
 
-        <div class="predictedYield" x-show="yieldProduction !== '0'">
+        <div class="predictedYield" x-show="yieldProduction !> '0'">
             <h2>Predicted Yield: <span x-text="yieldProduction"></span></h2>
     </div>
 
