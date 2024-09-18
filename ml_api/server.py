@@ -2,9 +2,13 @@ from flask import Flask, request, jsonify
 import numpy as np
 import pandas as pd
 import joblib
+from flask_cors import CORS  # Import CORS
+
+
 
 
 app = Flask(__name__)
+CORS(app)
 
 # File paths
 model_filepath = 'ml_api/best_ml.pkl'
