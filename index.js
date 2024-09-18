@@ -7,7 +7,7 @@ import userProfileRoutes from './routers/userProfileRouter.js';
 import taskManagementRoutes from './routers/taskManagementRouter.js';
 import machineryRoutes from './routers/machineManagementRouter.js';
 import cropRoutes from './routers/cropInventoryRouter.js';
-import analysisRoutes from './routers/analysisRecordRouter.js'
+import analysisRoutes from './routers/analysisRecordRouter.js';
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
